@@ -1,5 +1,6 @@
 import { useState, useCallback } from "react";
 import type { Conversation } from "@/types";
+import { generateUUID } from "@/lib/utils";
 
 const CONVERSATIONS_KEY = "conversations";
 const ACTIVE_ID_KEY = "activeConversationId";
@@ -39,7 +40,7 @@ function initSessionState(): SessionState {
     }
     // No conversations at all — create the first one
     const first: Conversation = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       title: "New Conversation",
       createdAt: Date.now(),
     };
@@ -57,7 +58,7 @@ export function useSession() {
 
   const startNewConversation = useCallback(() => {
     const newConv: Conversation = {
-      id: crypto.randomUUID(),
+      id: generateUUID(),
       title: "New Conversation",
       createdAt: Date.now(),
     };
