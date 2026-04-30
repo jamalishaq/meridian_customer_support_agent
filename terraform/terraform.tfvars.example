@@ -1,0 +1,8 @@
+aws_region              = "us-east-1"
+project_name            = "ai-agent"
+ecs_cluster_name        = "your-existing-cluster-name"
+ecr_repository_name     = "your-ecr-repo-name"
+github_actions_role_arn = "arn:aws:iam::123456789012:role/your-github-actions-role"
+desired_count           = 1
+task_cpu                = 256
+task_memory             = 512
