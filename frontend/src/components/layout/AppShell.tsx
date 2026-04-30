@@ -22,7 +22,7 @@ export function AppShell({
   return (
     <div className="h-screen flex bg-background overflow-hidden">
       {/* Sidebar — always visible, fixed 260px */}
-      <aside className="w-[260px] shrink-0 flex flex-col border-r border-border">
+      <aside className="w-65 shrink-0 flex flex-col border-r border-border">
         <div className="p-3 shrink-0">
           <Button className="w-full" onClick={onNewConversation}>
             New Conversation
