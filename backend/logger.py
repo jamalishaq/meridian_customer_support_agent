@@ -3,15 +3,25 @@ import json
 
 class JSONFormatter(logging.Formatter):
     def format(self, record):
-        return json.dumps({
+        payload = {
             "level": record.levelname,
-            "message": record.getMessage(),
             "logger": record.name,
             "timestamp": self.formatTime(record)
-        })
+        }
+        
+        # if the message is already a JSON string, merge it in
+        try:
+            msg = json.loads(record.getMessage())
+            if isinstance(msg, dict):
+                payload.update(msg)
+        except (json.JSONDecodeError, TypeError):
+            payload["message"] = record.getMessage()
 
-logger = logging.getLogger("agent")
-handler = logging.StreamHandler()
-handler.setFormatter(JSONFormatter())
-logger.addHandler(handler)
-logger.setLevel(logging.INFO)
+        return json.dumps(payload)
+
+def setup_logging():
+    root = logging.getLogger()
+    handler = logging.StreamHandler()
+    handler.setFormatter(JSONFormatter())
+    root.addHandler(handler)
+    root.setLevel(logging.INFO)

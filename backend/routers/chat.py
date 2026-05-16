@@ -1,12 +1,14 @@
 import json
+import logging
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
-from config import logger
 from models.schemas import ChatRequest
 from services import mcp as mcp_service
 from services.session import get_session, save_session
 from agent.loop import stream_agent
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -16,7 +18,7 @@ async def chat(request: ChatRequest):
     if mcp_service.mcp_session is None:
         raise HTTPException(status_code=503, detail="MCP server is unavailable")
 
-    logger.info({"event": "request_start", "session_id": request.session_id, "message_len": len(request.message)})
+    logger.info(json.dumps({"event": "request_start", "session_id": request.session_id, "message_len": len(request.message)}))
 
     try:
         session = get_session(request.session_id)

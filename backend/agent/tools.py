@@ -1,7 +1,9 @@
 import json
+import logging
 import jsonschema
-from config import logger
 import services.mcp as mcp_service
+
+logger = logging.getLogger(__name__)
 
 def parse_customer_from_result(result: str) -> dict | None:
                 try:
@@ -72,13 +74,13 @@ async def handle_tool_calls(tool_calls: list[dict], tools: list, session: dict) 
             })
             continue
 
-        logger.info({"event": "tool_call", "tool": tool_name, "arguments": arguments})
+        logger.info(json.dumps({"event": "tool_call", "tool": tool_name, "arguments": arguments}))
         try:
             result = await mcp_service.mcp_session.call_tool(tool_name, arguments)
             content = result.content[0].text if result.content else ""
-            logger.info({"event": "tool_result", "tool": tool_name, "success": True, "chars": len(content)})
+            logger.info(json.dumps({"event": "tool_result", "tool": tool_name, "success": True, "chars": len(content)}))
         except Exception as e:
-            logger.error({"event": "tool_error", "tool": tool_name, "error": str(e)})
+            logger.error(json.dumps({"event": "tool_error", "tool": tool_name, "error": str(e)}))
             content = f"Tool error: {str(e)}"
             
                 # ← catch auth success here

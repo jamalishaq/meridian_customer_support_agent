@@ -19,7 +19,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
     >
       <div
         className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 text-sm",
+          "max-w-[85%] md:max-w-[70%] rounded-2xl px-4 py-3 text-sm",
           isUser
             ? "bg-primary text-primary-foreground rounded-br-sm"
             : "bg-muted text-foreground rounded-bl-sm",

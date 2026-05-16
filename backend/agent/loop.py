@@ -1,10 +1,13 @@
 import asyncio
 import json
+import logging
 from typing import AsyncGenerator
 
-from config import llm_client, MAX_ITERATIONS, MAX_HISTORY_MESSAGES, LLM_MODEL, logger
+from config import llm_client, MAX_ITERATIONS, MAX_HISTORY_MESSAGES, LLM_MODEL
 from agent.tools import format_tools, handle_tool_calls
 from agent.prompt import build_system_message
+
+logger = logging.getLogger(__name__)
 
 
 def trim_history(history: list) -> list:
@@ -16,7 +19,7 @@ async def call_llm_with_retry(max_retries: int = 3, **kwargs):
         try:
             return await llm_client.chat.completions.create(**kwargs)
         except Exception as e:
-            logger.error({"event": "llm_error", "attempt": attempt, "error": str(e)})
+            logger.error(json.dumps({"event": "llm_error", "attempt": attempt, "error": str(e)}))
             is_rate_limit = "429" in str(e) or "rate" in str(e).lower()
             is_last_attempt = attempt == max_retries - 1
             if is_last_attempt or not is_rate_limit:
@@ -66,11 +69,11 @@ async def stream_agent(
                         entry["arguments"] += tc.function.arguments
 
         if finish_reason != "tool_calls":
-            logger.info({
+            logger.info(json.dumps({
                 "event": "request_complete",
                 "session_id": session.get("customer_id"),
                 "iterations": iteration_count + 1,
-            })
+            }))
             break
 
         for tc in tool_calls_by_index.values():

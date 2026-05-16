@@ -16,7 +16,7 @@ export function ChatWindow({ messages }: ChatWindowProps) {
 
   return (
     <ScrollArea className="flex-1 overflow-y-auto">
-      <div className="max-w-3xl mx-auto px-4 py-6 space-y-4">
+      <div className="max-w-3xl mx-auto px-3 md:px-6 py-6 space-y-4">
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full pt-24 text-muted-foreground">
             <p className="text-lg font-medium">How can I help you today?</p>

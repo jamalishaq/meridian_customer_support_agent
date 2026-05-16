@@ -2,10 +2,12 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from logger import setup_logging
 from config import FRONTEND_URL
 from services.mcp import lifespan
 from routers.chat import router
 
+setup_logging()
 app = FastAPI(lifespan=lifespan)
 
 app.add_middleware(
@@ -17,5 +19,6 @@ app.add_middleware(
 
 app.include_router(router)
 
-if __name__ == "__main__":
+if __name__ == "__main__":  
+    
     uvicorn.run("main:app", reload=True)

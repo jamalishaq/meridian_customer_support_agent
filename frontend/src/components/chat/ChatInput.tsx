@@ -27,7 +27,7 @@ export function ChatInput({ onSend, onAbort, isStreaming }: ChatInputProps) {
 
   return (
     <div className="shrink-0 border-t border-border bg-background">
-      <div className="max-w-3xl mx-auto px-4 py-3">
+      <div className="max-w-3xl mx-auto px-3 md:px-4 py-3">
         <div className="flex items-end gap-2">
           <Textarea
             value={value}
@@ -85,7 +85,6 @@ export function ChatInput({ onSend, onAbort, isStreaming }: ChatInputProps) {
             </Button>
           )}
         </div>
-
       </div>
     </div>
   );
